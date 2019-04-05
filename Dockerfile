@@ -11,9 +11,9 @@ WORKDIR /app
 # (note: using pinned versions to ensure immutable build environment)
 RUN apk update && \
     apk upgrade && \
-    apk add python=2.7.15-r1 && \
+    apk add python=2.7.15-r3 && \
     apk add make=4.2.1-r2 && \
-    apk add g++=6.4.0-r9
+    apk add g++=8.2.0-r2
 
 # Using an alternative package install location
 # to allow overwriting the /app folder at runtime
@@ -28,7 +28,8 @@ COPY ./package.json $NPM_PACKAGES/
 COPY ./package-lock.json $NPM_PACKAGES/
 
 # Use "Continuous Integration" to install as-is from package-lock.json
-RUN npm ci --prefix=$NPM_PACKAGES
+#RUN npm ci --prefix=$NPM_PACKAGES
+RUN npm install --prefix=$NPM_PACKAGES
 
 # Link in the global install because `require()` only looks for ./node_modules
 # WARNING: This is overwritten by volume-mount at runtime!
